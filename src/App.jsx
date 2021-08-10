@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./styles.css";
+import { InputTodo } from "./components/InputTodo";
+import { IncompleteTodos } from "./components/IncompleteTodos";
+import { CompleteTodos } from "./components/CompleteTodos";
 
 export const App = () => {
   const [todoText, setTodoText] = useState("");
@@ -47,43 +50,22 @@ export const App = () => {
 
   return (
     <>
-      <div className="input-area">
-        <input
-          placeholder="TODOを入力"
-          value={todoText}
-          onChange={onChangeText}
-        />
-        <button onClick={onClickAdd}>追加</button>
-      </div>
-      <div className="incomplete-area">
-        <p className="title">未完了のTODO</p>
-        <ul>
-          {incompleteTodos.map((todo, index) => {
-            return (
-              // Reactでは仮想DOMが裏で差分を見ているので、ループのときは
-              // returnの親要素にkeyを設定する
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onclickComplete(index)}>完了</button>
-                <button onClick={() => onclickDelete(index)}>削除</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="complete-area">
-        <p className="title">完了のTODO</p>
-        <ul>
-          {completeTodos.map((completeTodo, index) => {
-            return (
-              <div key={completeTodo} className="list-row">
-                <li>{completeTodo}</li>
-                <button onClick={() => onClickReturnTodo(index)}>戻す</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeText}
+        onClick={onClickAdd}
+      />
+
+      <IncompleteTodos
+        todos={incompleteTodos}
+        onclickComplete={onclickComplete}
+        onclickDelete={onclickDelete}
+      />
+
+      <CompleteTodos
+        compTodos={completeTodos}
+        onClickReturnTodo={onClickReturnTodo}
+      />
     </>
   );
 };
